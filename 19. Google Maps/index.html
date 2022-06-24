@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Google Map</title>
+    <style>
+        #map{
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Google Map</h1>
+    <div id="map"></div>
+
+    <script>
+        function initMap(){
+            //Map options
+            var options = {
+                zoom : 13,
+                center : {lat : 37.532600, lng: 127.024612}
+            }
+            //New map
+            var map = new google.maps.Map(document.getElementById('map'), options);
+
+            //Listen of click on map
+            google.maps.event.addListener(map, 'click',  function(e){
+                //add Marker
+                addMarker({coords:e.latLng});
+            });
+            /* //Add marker
+            var marker = new google.maps.Marker({
+                position: {lat: 37.382698, lng : 127.118904},
+                map : map,
+                icon : 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+            });
+
+            var infoWindow = new google.maps.InfoWindow({
+                content: '<h1>Bundang<h1>'
+            });
+
+            marker.addListener('click', function(){
+                infoWindow.open(map, marker);
+            }); */
+
+
+            //Array of markers
+            var markers =[
+            {
+                coords : {lat : 37.532600, lng: 127.024612},
+                iconImage : 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png', 
+                content : '<h1>Seoul<h1>'
+            },
+            {
+                coords : {lat: 37.382698, lng : 127.118904},
+                content : '<h1>Bundang<h1>'
+            },
+            {coords : {lat: 36.62847407375391, lng : 127.45715074176846}}
+            ];
+            /* addMarker({
+                coords : {lat : 37.532600, lng: 127.024612},
+                iconImage : 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png', 
+                content : '<h1>Seoul<h1>'
+            });
+            addMarker({
+                coords : {lat: 37.382698, lng : 127.118904},
+                content : '<h1>Bundang<h1>'
+            });
+            addMarker({coords : {lat: 36.62847407375391, lng : 127.45715074176846}}); */
+
+            //Loop through markers
+            for(var i =0; i<markers.length; i++){
+                addMarker(markers[i]);
+            }
+
+            // Add marker function
+            function addMarker(props){
+                var marker = new google.maps.Marker({
+                    position: props.coords,
+                    map : map,
+                    //icon : props.iconImage
+            });
+            //check for custom icon
+            if(props.iconImage){
+                //set icon image
+                marker.setIcon(props.iconImage);
+            }
+
+            //check content
+            if(props.content){
+                //set content
+                var infoWindow = new google.maps.InfoWindow({
+                content: props.content
+            });
+
+            marker.addListener('click', function(){
+                infoWindow.open(map, marker);
+            }); 
+
+            }
+        }
+    }
+    </script>
+
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap&v=weekly"
+      defer>
+    </script>
+</body>
+</html>
